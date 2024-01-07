@@ -120,8 +120,8 @@ public class CliLibrarySystem implements CliSystem {
         System.out.println(" b s <'title'|'author'|'isbn'|'genre'> <value> - Search a book and show its quantity");
         System.out.println(" B l <uuid> - Login as a specific user");
         System.out.println(" B s - Show your borrowed books");
-        System.out.println(" B b <'title'|'author'|'isbn'|'genre'> <value> - Borrow a book");
-        System.out.println(" B r <'title'|'author'|'isbn'|'genre'> <value> - Return a book");
+        System.out.println(" B b <isbn> - Borrow a book");
+        System.out.println(" B r <isbn> - Return a book");
         System.out.println();
         System.out.println("Management commands:");
         System.out.println(" b a <title> <author> <isbn> <genre> [quantity] - Add one or more books");

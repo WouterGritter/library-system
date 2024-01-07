@@ -30,6 +30,7 @@ public class BorrowedBook {
         }
 
         long daysOverdue = Duration.between(getDueDate(), SimulatedDateTime.now()).toDays();
+        daysOverdue = Math.max(daysOverdue, 1L);
         return daysOverdue * BorrowStore.FINE_USD_PER_DAY;
     }
 
@@ -65,8 +66,10 @@ public class BorrowedBook {
     @Override
     public String toString() {
         return "BorrowedBook{" +
-                "book=" + book +
-                ", user=" + user +
+                "book=" + book.getTitle() +
+                ", user=" + user.getName() +
+                ", overdue=" + isOverdue() +
+                ", overdueFine=" + calculateOverdueFine() +
                 '}';
     }
 }

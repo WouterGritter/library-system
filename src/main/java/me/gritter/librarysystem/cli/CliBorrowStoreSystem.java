@@ -64,39 +64,6 @@ public class CliBorrowStoreSystem implements CliSystem {
         }
     }
 
-    private Stream<BookRecord> findBookRecord(String fieldName, String value) {
-        switch (fieldName) {
-            case "title":
-                return bookStore.findBookRecordByTitle(value);
-            case "author":
-                return bookStore.findBookRecordByAuthor(value);
-            case "isbn":
-                return bookStore.findBookRecordByIsbn(value);
-            case "genre":
-                return Genre.parseGenre(value)
-                        .map(bookStore::findBookRecordByGenre)
-                        .orElseGet(Stream::empty);
-            default:
-                return Stream.empty();
-        }
-    }
-
-    private Optional<BookRecord> findSingleBookRecord(String fieldName, String value) {
-        List<BookRecord> records = findBookRecord(fieldName, value).collect(Collectors.toList());
-
-        if (records.isEmpty()) {
-            System.out.println("Found no books matching your criteria.");
-            return Optional.empty();
-        }
-
-        if (records.size() > 1) {
-            System.out.println("Found multiple books matching your criteria. Please use a more specific field, or provide all parameters using the 'a' command.");
-            return Optional.empty();
-        }
-
-        return Optional.of(records.get(0));
-    }
-
     private void showAllBorrowedBooks() {
         System.out.println("All borrowed books:");
         borrowStore.getBorrowedBooks()
@@ -106,7 +73,6 @@ public class CliBorrowStoreSystem implements CliSystem {
     private void showOverdueBooks() {
         System.out.println("All overdue books:");
         borrowStore.findOverdueBooks()
-                .map(borrowed -> "book=" + borrowed.getBook().getTitle() + ", fine=" + borrowed.calculateOverdueFine())
                 .forEach(System.out::println);
     }
 
@@ -149,14 +115,15 @@ public class CliBorrowStoreSystem implements CliSystem {
             return;
         }
 
-        if (parts.length < 2) {
+        if (parts.length < 1) {
             System.out.println("Invalid arguments.");
             return;
         }
 
-        BookRecord record = findSingleBookRecord(parts[0], parts[1]).orElse(null);
+        BookRecord record = bookStore.findBookRecordByIsbn(parts[0]).findAny().orElse(null);
         if (record == null) {
-            return; // Message has been sent by findSingleBookRecord()
+            System.out.println("Could not find a book with ISBN " + parts[0] + ".");
+            return;
         }
 
         try {
@@ -173,24 +140,21 @@ public class CliBorrowStoreSystem implements CliSystem {
             return;
         }
 
-        if (parts.length < 2) {
+        if (parts.length < 1) {
             System.out.println("Invalid arguments.");
             return;
         }
 
-        BookRecord record = findSingleBookRecord(parts[0], parts[1]).orElse(null);
-        if (record == null) {
-            return; // Message has been sent by findSingleBookRecord()
+        BorrowedBook borrowed = borrowStore.findBorrowedBook(parts[0], currentLogin).orElse(null);
+        if (borrowed == null) {
+            System.out.println("Could not find a borrowed book with ISBN " + parts[0] + ".");
+            return;
         }
 
-        try {
-            BorrowedBook borrowed = borrowStore.returnBook(currentLogin, record.getBook());
-            System.out.println("Successfully returned book '" + record.getBook().getTitle() + "'!");
-            if (borrowed.isOverdue()) {
-                System.out.println("You have been fined $" + String.format("%.2f", borrowed.calculateOverdueFine()) + " due to returning the book after the due date.");
-            }
-        } catch (BorrowException e) {
-            System.out.println(e.getMessage());
+        borrowStore.returnBook(borrowed);
+        System.out.println("Successfully returned book '" + borrowed.getBook().getTitle() + "'!");
+        if (borrowed.isOverdue()) {
+            System.out.println("You have been fined $" + String.format("%.2f", borrowed.calculateOverdueFine()) + " due to returning the book after the due date.");
         }
     }
 }

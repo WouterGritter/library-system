@@ -54,17 +54,15 @@ public class BorrowStore {
         return borrowed;
     }
 
-    public BorrowedBook returnBook(User user, Book book) throws BorrowException {
-        BorrowedBook borrowed = findBorrowedBook(book, user).orElse(null);
-        if (borrowed == null) {
-            throw new BorrowException("You didn't borrow that book.");
+    public void returnBook(BorrowedBook borrowed) {
+        if (!borrowedBooks.contains(borrowed)) {
+            throw new IllegalArgumentException();
         }
 
-        BookRecord record = bookStore.getBookRecord(book);
+        BookRecord record = bookStore.getBookRecord(borrowed.getBook());
         record.updateQuantity(1);
 
         borrowedBooks.remove(borrowed);
-        return borrowed;
     }
 
     public Collection<BorrowedBook> getBorrowedBooks() {
@@ -95,6 +93,13 @@ public class BorrowStore {
     public Optional<BorrowedBook> findBorrowedBook(Book book, User user) {
         return borrowedBooks.stream()
                 .filter(bb -> bb.getBook().equals(book))
+                .filter(bb -> bb.getUser().equals(user))
+                .findAny();
+    }
+
+    public Optional<BorrowedBook> findBorrowedBook(String isbn, User user) {
+        return borrowedBooks.stream()
+                .filter(bb -> bb.getBook().getIsbn().equals(isbn))
                 .filter(bb -> bb.getUser().equals(user))
                 .findAny();
     }
