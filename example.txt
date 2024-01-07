@@ -1,0 +1,263 @@
+/usr/lib/jvm/default-java/bin/java -javaagent:/snap/intellij-idea-community/475/lib/idea_rt.jar=44769:/snap/intellij-idea-community/475/bin -Dfile.encoding=UTF-8 -classpath /home/wouter/dev/library-system/target/classes me.gritter.librarysystem.Main
+Maximum number of borrowed books per user: 2
+Maximum period of borrowing a book: 5 days
+Fine per day a book is overdue to be returned: $1.50
+
+Welcome to the library system.
+The commands and their arguments are case sensitive.
+Arguments with spaces can be formatted by enclosing them in double-quotes (").
+Commands:
+ h - Show this help
+
+Time commands:
+ t t - Show the current simulated date/time
+ t a - Advance the simulated date/time by 1 day
+
+General/user commands:
+ b l - List all books and their quantities
+ b s <'title'|'author'|'isbn'|'genre'> <value> - Search a book and show its quantity
+ B l <uuid> - Login as a specific user
+ B s - Show your borrowed books
+ B b <isbn> - Borrow a book
+ B r <isbn> - Return a book
+
+Management commands:
+ b a <title> <author> <isbn> <genre> [quantity] - Add one or more books
+ b q <'title'|'author'|'isbn'|'genre'> <value> <quantity delta> - Update the quantity of a book
+ b d <'title'|'author'|'isbn'|'genre'> <value> - Remove all copies of a book
+ b g - List all genres
+ u l - List all users
+ u a <name> <address> <contact information> - Add a new user
+ u d <uuid> - Delete an existing user
+ B S - Show all borrowed books
+ B O - Show all overdue books and their fines
+
+User commands:
+
+Command (h for help): b l
+Available books:
+
+"Title"
+Author: Author
+ISBN: ISBN
+Genre: HUMOR
+Quantity: 3
+
+"Other title"
+Author: Other author
+ISBN: OtherISBN
+Genre: SCIENCE_FICTION
+Quantity: 1
+
+Command (h for help): u l
+Registered users:
+ User{name='User', address='Awesome address', contactInformation='info@example.com', uuid=d9f6d039-473f-4bc4-8155-488002dfc1a8}
+
+Command (h for help): B s
+Please log in first.
+
+Command (h for help): B l d9f6d039-473f-4bc4-8155-488002dfc1a8
+You are now logged in as User.
+
+Command (h for help): B s
+Your borrowed books:
+
+Command (h for help): B b OtherISBN
+Successfully borrowed book 'Other title'!
+
+Command (h for help): b l
+Available books:
+
+"Title"
+Author: Author
+ISBN: ISBN
+Genre: HUMOR
+Quantity: 3
+
+Command (h for help): B s
+Your borrowed books:
+BorrowedBook{book=Other title, user=User, overdue=false, overdueFine=0.0}
+
+Command (h for help):  B o
+Invalid command. Type 'h' for help.
+
+Command (h for help): t t
+Current simulated date/time: 2024-01-07T16:24:27.534380
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-08T16:24:29.313103
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-09T16:24:30.110922
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-10T16:24:30.758853
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-11T16:24:32.177166
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-12T16:24:33.679798
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-13T16:24:34.749784
+
+Command (h for help): B O
+All overdue books:
+BorrowedBook{book=Other title, user=User, overdue=true, overdueFine=1.5}
+
+Command (h for help): t a
+Simulated number of days increased. Current simulated date/time: 2024-01-14T16:24:38.361967
+
+Command (h for help): B O
+All overdue books:
+BorrowedBook{book=Other title, user=User, overdue=true, overdueFine=3.0}
+
+Command (h for help): B r ISBN
+Could not find a borrowed book with ISBN ISBN.
+
+Command (h for help): B r OtherISBN
+Successfully returned book 'Other title'!
+You have been fined $3.00 due to returning the book after the due date.
+
+Command (h for help): b l
+Available books:
+
+"Title"
+Author: Author
+ISBN: ISBN
+Genre: HUMOR
+Quantity: 3
+
+"Other title"
+Author: Other author
+ISBN: OtherISBN
+Genre: SCIENCE_FICTION
+Quantity: 1
+
+Command (h for help): b a "super awesome book" "awesome author" ISBN1234
+Invalid arguments.
+
+Command (h for help): h
+The commands and their arguments are case sensitive.
+Arguments with spaces can be formatted by enclosing them in double-quotes (").
+Commands:
+ h - Show this help
+
+Time commands:
+ t t - Show the current simulated date/time
+ t a - Advance the simulated date/time by 1 day
+
+General/user commands:
+ b l - List all books and their quantities
+ b s <'title'|'author'|'isbn'|'genre'> <value> - Search a book and show its quantity
+ B l <uuid> - Login as a specific user
+ B s - Show your borrowed books
+ B b <isbn> - Borrow a book
+ B r <isbn> - Return a book
+
+Management commands:
+ b a <title> <author> <isbn> <genre> [quantity] - Add one or more books
+ b q <'title'|'author'|'isbn'|'genre'> <value> <quantity delta> - Update the quantity of a book
+ b d <'title'|'author'|'isbn'|'genre'> <value> - Remove all copies of a book
+ b g - List all genres
+ u l - List all users
+ u a <name> <address> <contact information> - Add a new user
+ u d <uuid> - Delete an existing user
+ B S - Show all borrowed books
+ B O - Show all overdue books and their fines
+
+User commands:
+
+Command (h for help): b g
+Available genres (case insensitive):
+ FICTION
+ NON_FICTION
+ MYSTERY
+ SCIENCE_FICTION
+ FANTASY
+ ROMANCE
+ HORROR
+ THRILLER
+ BIOGRAPHY
+ HISTORY
+ SELF_HELP
+ BUSINESS
+ CHILDREN
+ POETRY
+ SCIENCE
+ TRAVEL
+ COOKING
+ ART
+ PHILOSOPHY
+ RELIGION
+ MUSIC
+ SPORTS
+ HUMOR
+ EDUCATION
+
+Command (h for help): Command (h for help): b a "super awesome book" "awesome author" ISBN1234
+Invalid command. Type 'h' for help.
+
+Command (h for help): b a "super awesome book" "awesome author" ISBN1234 poerty
+Invalid genre. Type 'g' to list all genres.
+
+Command (h for help): b a "super awesome book" "awesome author" ISBN1234 science
+Quantity of book 'super awesome book' is now 1.
+
+Command (h for help): b l
+Available books:
+
+"Title"
+Author: Author
+ISBN: ISBN
+Genre: HUMOR
+Quantity: 3
+
+"super awesome book"
+Author: awesome author
+ISBN: ISBN1234
+Genre: SCIENCE
+Quantity: 1
+
+"Other title"
+Author: Other author
+ISBN: OtherISBN
+Genre: SCIENCE_FICTION
+Quantity: 1
+
+Command (h for help): b s author "Other author"
+"Other title"
+Author: Other author
+ISBN: OtherISBN
+Genre: SCIENCE_FICTION
+Quantity: 1
+
+Command (h for help): b s title "Other title"
+"Other title"
+Author: Other author
+ISBN: OtherISBN
+Genre: SCIENCE_FICTION
+Quantity: 1
+
+Command (h for help): u l
+Registered users:
+ User{name='User', address='Awesome address', contactInformation='info@example.com', uuid=d9f6d039-473f-4bc4-8155-488002dfc1a8}
+
+Command (h for help): u a user address "contact information"
+A new user has been created: User{name='user', address='address', contactInformation='contact information', uuid=9f242b6d-4b6f-4b37-8884-682687774516}
+
+Command (h for help): u l
+Registered users:
+ User{name='user', address='address', contactInformation='contact information', uuid=9f242b6d-4b6f-4b37-8884-682687774516}
+ User{name='User', address='Awesome address', contactInformation='info@example.com', uuid=d9f6d039-473f-4bc4-8155-488002dfc1a8}
+
+Command (h for help): u d 9f242b6d-4b6f-4b37-8884-682687774516
+The following user has been deleted: User{name='user', address='address', contactInformation='contact information', uuid=9f242b6d-4b6f-4b37-8884-682687774516}
+
+Command (h for help): u l
+Registered users:
+ User{name='User', address='Awesome address', contactInformation='info@example.com', uuid=d9f6d039-473f-4bc4-8155-488002dfc1a8}
+
+Command (h for help):
+Process finished with exit code 130 (interrupted by signal 2:SIGINT)
